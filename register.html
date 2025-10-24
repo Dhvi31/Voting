@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register for Election | VoteVibes</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="register.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="logo">
+        <i class="fas fa-dove"></i>
+        <h1>VoteVibes</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="upcoming.html">Upcoming Elections</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Form Section -->
+  <main>
+    <section class="form-section">
+      <h2>Register for Upcoming Election</h2>
+      <form id="electionRegistrationForm">
+        <label for="election">Select Election</label>
+        <select id="election" name="election" required>
+          <option value="">--Select Election--</option>
+          <option value="student_council">Student Council 2025</option>
+          <option value="tech_club_president">Tech Club President</option>
+          <option value="cultural_committee">Cultural Committee</option>
+        </select>
+
+        <label for="role">Your Role</label>
+        <select id="role" name="role" required>
+          <option value="">--Select Role--</option>
+          <option value="candidate">Candidate</option>
+          <option value="voter">Voter</option>
+        </select>
+
+        <label for="district">District / Constituency</label>
+        <input type="text" id="district" name="district" placeholder="Optional if not applicable">
+
+        <label for="manifesto">Manifesto / Reason for Registering</label>
+        <textarea id="manifesto" name="manifesto" placeholder="Write your manifesto or reason for registering"></textarea>
+
+        <button type="submit">Register</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">
+    <i class="fas fa-check-circle"></i>
+    <span>Registration Successful!</span>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 VoteVibes. All rights reserved.</p>
+  </footer>
+
+  <!-- JS -->
+  <script>
+    const form = document.getElementById("electionRegistrationForm");
+    const toast = document.getElementById("toast");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      // Show toast
+      toast.classList.add("show");
+
+      // Hide toast after 2 seconds and redirect
+      setTimeout(() => {
+        toast.classList.remove("show");
+        window.location.href = "success.html";
+      }, 2200);
+    });
+  </script>
+</body>
+</html>

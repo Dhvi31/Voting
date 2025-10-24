@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VoteVibes | Login</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="index.css" />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    header .navbar {
+      padding: 15px 40px;
+      background: #001a66;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .login-container {
+      max-width: 400px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 30px 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .login-container h2 {
+      margin-bottom: 20px;
+      color: #001a66;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      background: #001a66;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .login-container button:hover {
+      background: #0040ff;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: #ccc;
+    }
+
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+    .divider span { padding: 0 10px; color: #666; }
+
+    .otp-message { color: green; margin-top: 10px; }
+
+    .google-signin { display: flex; justify-content: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo">
+      <i class="fa-solid fa-dove"></i> VoteVibes
+    </div>
+  </header>
+
+  <div class="login-container">
+    <h2>Login to VoteVibes</h2>
+
+    <!-- Phone Number Login -->
+    <input type="text" id="phone" placeholder="Enter Phone Number" />
+    <button id="sendOtpBtn">Send OTP</button>
+
+    <input type="text" id="otp" placeholder="Enter OTP" style="display:none;" />
+    <button id="verifyOtpBtn" style="display:none;">Verify OTP</button>
+    <div class="otp-message" id="otpMessage"></div>
+
+    <div class="divider"><span>OR</span></div>
+
+    <!-- Google Login -->
+    <div class="google-signin">
+      <div id="g_id_signin" data-type="standard"></div>
+    </div>
+  </div>
+
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <script>
+    // ----------------- Phone OTP System (Demo) -----------------
+    const sendOtpBtn = document.getElementById('sendOtpBtn');
+    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+    const phoneInput = document.getElementById('phone');
+    const otpInput = document.getElementById('otp');
+    const otpMessage = document.getElementById('otpMessage');
+
+    let generatedOtp = '';
+
+    sendOtpBtn.addEventListener('click', () => {
+      const phone = phoneInput.value.trim();
+      if(phone.length < 10){
+        alert("Enter a valid phone number");
+        return;
+      }
+      generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
+      console.log("OTP sent:", generatedOtp); // For testing/demo only
+      otpMessage.innerText = "OTP sent to your phone!";
+      otpInput.style.display = "block";
+      verifyOtpBtn.style.display = "block";
+    });
+
+    verifyOtpBtn.addEventListener('click', () => {
+      const otp = otpInput.value.trim();
+      if(otp === generatedOtp){
+        otpMessage.innerText = "Login Successful!";
+        setTimeout(() => {
+          window.location.href = "dashboard.html"; // Redirect after login
+        }, 1000);
+      } else {
+        otpMessage.innerText = "Invalid OTP. Try again.";
+      }
+    });
+
+    // ----------------- Google Login -----------------
+    window.onload = function() {
+      google.accounts.id.initialize({
+        client_id: "970706649931-jh3jhoqe03b5dnv2ctj4jemf7fsbbbr5.apps.googleusercontent.com", // <-- Replace with your actual client ID
+        callback: handleCredentialResponse
+      });
+      google.accounts.id.renderButton(
+        document.getElementById("g_id_signin"),
+        { theme: "outline", size: "large", width: "250" }  // customization
+      );
+      google.accounts.id.prompt(); // auto prompt
+    };
+
+    function handleCredentialResponse(response) {
+      const jwt = response.credential;
+
+      // Decode JWT to get user info
+      const base64Url = jwt.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const user = JSON.parse(decodeURIComponent(atob(base64).split('').map(c =>
+        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+      ).join('')));
+
+      console.log("Google User Info:", user);
+
+      // Redirect after Google login
+      window.location.href = "dashboard.html"; // redirect to dashboard
+    }
+  </script>
+
+</body>
+</html>

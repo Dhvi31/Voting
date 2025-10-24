@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Election Results | VoteVibes</title>
+
+  <!-- Font Awesome for Dove Icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="result.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo"><i class="fa-solid fa-dove"></i>VoteVibes</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Voter Dashboard</a></li>
+      <li><a href="candidate.html">Candidate Dashboard</a></li>
+      <li><a href="results.html" class="active">Results</a></li>
+      <li><a href="upcoming.html">Upcoming Elections</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="register.html" class="btn">Register</a>
+      <a href="login.html" class="btn-outline">Login</a>
+    </div>
+  </header>
+
+  <!-- Results Section -->
+  <section class="features">
+    <h2>Election Results</h2>
+    <div class="feature-cards"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div>
+        <h4>About VoteVibes</h4>
+        <p>Secure online voting platform for all students.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="upcoming.html">Upcoming Elections</a></li>
+          <li><a href="results.html">Results</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>Email: support@votevibes.com</li>
+          <li>Phone: +91 1234567890</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 VoteVibes. All Rights Reserved.
+    </div>
+  </footer>
+
+  <!-- JS to dynamically create results -->
+  <script>
+    const elections = [
+      {
+        name: "Student Union Election",
+        date: "20 Nov 2025",
+        candidates: [
+          { name: "Ravi Kumar - Party A", votes: 120 },
+          { name: "Anika Sharma", votes: 85 },
+          { name: "Priya Singh", votes: 40 }
+        ]
+      },
+      {
+        name: "Hostel Council Election",
+        date: "05 Dec 2025",
+        candidates: [
+          { name: "Ashok Mehta", votes: 60 },
+          { name: "Simran Kaur - Party Y", votes: 95 }
+        ]
+      }
+    ];
+
+    const container = document.querySelector(".feature-cards");
+    container.innerHTML = "";
+
+    elections.forEach(election => {
+      const winner = election.candidates.reduce((max, c) => c.votes > max.votes ? c : max, election.candidates[0]);
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+        <h3>${election.name}</h3>
+        <p><strong>Date:</strong> ${election.date}</p>
+        <h4>Winner: ${winner.name}</h4>
+        <ul>
+          ${election.candidates.map(c => `<li>${c.name}: ${c.votes} votes</li>`).join("")}
+        </ul>
+      `;
+
+      container.appendChild(card);
+    });
+  </script>
+
+</body>
+</html>

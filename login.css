@@ -1,0 +1,189 @@
+/* ==========================
+   Color Palette & Fonts
+========================== */
+:root {
+    --primary-gradient: linear-gradient(90deg, #001a66, #001a66);
+    --secondary-gradient: linear-gradient(90deg, #ffcc00, #ffcc00);
+    --background-color: #f4f6f9;
+    --text-color: #222222;
+    --accent-color: #ffcc00;
+    --card-background: #ffffff;
+    --input-background: #ffffff;
+    --footer-background: #001a66;
+}
+
+/* ==========================
+   Reset & Body
+========================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* ==========================
+   Header
+========================== */
+header {
+    background: var(--primary-gradient);
+    padding: 1rem 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+header .container {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+header h1 {
+    color: white;
+    font-size: 1.8rem;
+}
+
+header h1 i {
+    margin-right: 8px;
+    color: var(--accent-color);
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+header nav ul li a:hover {
+    color: var(--accent-color);
+}
+
+/* ==========================
+   Form Section
+========================== */
+.form-section {
+    width: 90%;
+    max-width: 400px;
+    margin: 4rem auto;
+    padding: 2.5rem;
+    background: var(--card-background);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.form-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #001a66;
+    font-weight: 700;
+}
+
+.form-section label {
+    display: block;
+    margin-bottom: 0.5rem;
+    margin-top: 1rem;
+    font-weight: 500;
+    text-align: left;
+}
+
+.form-section input {
+    width: 100%;
+    padding: 0.9rem;
+    margin-top: 0.3rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
+    background: var(--input-background);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.form-section input:focus {
+    border-color: #001a66;
+    box-shadow: 0 0 8px rgba(0,123,255,0.3);
+    outline: none;
+}
+
+.form-section button {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1.8rem;
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    transition: all 0.3s ease;
+}
+
+.form-section button:hover {
+    background: var(--secondary-gradient);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* ==========================
+   OR Separator
+========================== */
+.form-section div[style*="— OR —"] {
+    margin: 20px 0;
+    font-weight: 500;
+    color: #555;
+}
+
+/* ==========================
+   Google Button
+========================== */
+.g_id_signin {
+    display: inline-block;
+    margin-top: 1rem;
+}
+
+/* "Login secured by Google" text */
+.form-section p {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 5px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+    background-color: var(--footer-background);
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    .form-section {
+        padding: 2rem 1.5rem;
+    }
+    header .container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    header nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

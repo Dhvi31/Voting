@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vote Now | VoteVibes</title>
+
+  <!-- Font Awesome for Dove Icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="ballot.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo"><i class="fa-solid fa-dove"></i>VoteVibes</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Voter Dashboard</a></li>
+      <li><a href="ballot.html" class="active">Vote</a></li>
+      <li><a href="upcoming.html">Upcoming Elections</a></li>
+      <li><a href="about.html">About Us</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="register.html" class="btn">Register</a>
+      <a href="login.html" class="btn-outline">Login</a>
+    </div>
+  </header>
+
+  <!-- Voting Section -->
+  <section class="features">
+    <h2>Vote in Elections</h2>
+    <div class="feature-cards">
+
+      <!-- Student Union Election -->
+      <form id="studentUnionForm" class="card">
+        <h3>Student Union Election</h3>
+        <p><strong>Date:</strong> 20 Nov 2025</p>
+        <h4>Candidates</h4>
+        <label><input type="radio" name="student_union" value="Ravi Kumar"> Ravi Kumar - Party A</label>
+        <label><input type="radio" name="student_union" value="Anika Sharma"> Anika Sharma - Party B</label>
+        <label><input type="radio" name="student_union" value="Priya Singh"> Priya Singh - Independent</label>
+        <button type="submit" class="btn small-btn">Submit Vote</button>
+      </form>
+
+      <!-- Hostel Council Election -->
+      <form id="hostelCouncilForm" class="card">
+        <h3>Hostel Council Election</h3>
+        <p><strong>Date:</strong> 05 Dec 2025</p>
+        <h4>Candidates</h4>
+        <label><input type="radio" name="hostel_council" value="Ashok Mehta"> Ashok Mehta - Party X</label>
+        <label><input type="radio" name="hostel_council" value="Simran Kaur"> Simran Kaur - Party Y</label>
+        <button type="submit" class="btn small-btn">Submit Vote</button>
+      </form>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div>
+        <h4>About VoteVibes</h4>
+        <p>Secure online voting platform for all students.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="upcoming.html">Upcoming Elections</a></li>
+          <li><a href="ballot.html">Vote Now</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>Email: support@votevibes.com</li>
+          <li>Phone: +91 1234567890</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 VoteVibes. All Rights Reserved.
+    </div>
+  </footer>
+
+  <!-- JS Voting Logic -->
+  <script>
+    const votes = {
+      "Ravi Kumar": 0,
+      "Anika Sharma": 0,
+      "Priya Singh": 0,
+      "Ashok Mehta": 0,
+      "Simran Kaur": 0
+    };
+
+    document.getElementById("studentUnionForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const selected = document.querySelector('input[name="student_union"]:checked');
+      if (!selected) return alert("Please select a candidate!");
+      votes[selected.value] += 1;
+      alert(`You voted for ${selected.value}!`);
+      console.log("Current votes:", votes);
+    });
+
+    document.getElementById("hostelCouncilForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const selected = document.querySelector('input[name="hostel_council"]:checked');
+      if (!selected) return alert("Please select a candidate!");
+      votes[selected.value] += 1;
+      alert(`You voted for ${selected.value}!`);
+      console.log("Current votes:", votes);
+    });
+  </script>
+
+</body>
+</html>
