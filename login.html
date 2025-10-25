@@ -7,8 +7,6 @@
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <link rel="stylesheet" href="index.css" />
-
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -32,7 +30,7 @@
     }
 
     .login-container {
-      max-width: 400px;
+      max-width: 420px;
       margin: 80px auto;
       background: #fff;
       padding: 30px 25px;
@@ -53,6 +51,7 @@
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 16px;
+      box-sizing: border-box;
     }
 
     .login-container button {
@@ -67,7 +66,12 @@
       margin-top: 10px;
     }
 
-    .login-container button:hover {
+    .login-container button[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .login-container button:hover:not([disabled]) {
       background: #0040ff;
     }
 
@@ -91,9 +95,39 @@
     .divider::after { right: 0; }
     .divider span { padding: 0 10px; color: #666; }
 
-    .otp-message { color: rgb(16, 168, 16); margin-top: 10px; }
+    .otp-message { color: rgb(16, 168, 16); margin-top: 10px; min-height: 20px; }
 
     .google-signin { display: flex; justify-content: center; margin-top: 20px; }
+
+    /* Demo SMS box */
+    .demo-sms {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #ffffff 0%, #eef9f1 100%);
+      border: 1px solid #d6f1dd;
+      color: #064d2a;
+      font-weight: 600;
+      display: none; /* shown only in demo mode after sending */
+      box-shadow: 0 2px 6px rgba(5,100,50,0.06);
+    }
+
+    .small {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .resend-info {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    /* responsive */
+    @media (max-width: 480px) {
+      .login-container { margin: 40px 12px; }
+    }
+
   </style>
 </head>
 <body>
@@ -108,12 +142,21 @@
     <h2>Login to VoteVibes</h2>
 
     <!-- Phone Number Login -->
-    <input type="text" id="phone" placeholder="Enter Phone Number" />
-    <button id="sendOtpBtn">Send OTP</button>
+    <input type="text" id="phone" placeholder="Enter Phone Number (e.g. +91xxxxxxxxxx or 9876543210)" />
+    <button id="sendOtpBtn">Send OTP (Demo)</button>
 
-    <input type="text" id="otp" placeholder="Enter OTP" style="display:none;" />
+    <input type="text" id="otp" placeholder="Enter OTP" style="display:none;" maxlength="6" />
     <button id="verifyOtpBtn" style="display:none;">Verify OTP</button>
+
     <div class="otp-message" id="otpMessage"></div>
+
+    <!-- Demo "SMS" shown on page (for testing only) -->
+    <div class="demo-sms" id="demoSmsBox" aria-live="polite">
+      Demo OTP: <span id="demoOtpValue"></span>
+      <div class="small" style="margin-top:6px;">This is a demo OTP shown on screen for testing. In production you would not show this.</div>
+    </div>
+
+    <div class="resend-info small" id="resendInfo" style="display:none;"></div>
 
     <div class="divider"><span>OR</span></div>
 
@@ -133,61 +176,159 @@
     const phoneInput = document.getElementById('phone');
     const otpInput = document.getElementById('otp');
     const otpMessage = document.getElementById('otpMessage');
+    const demoSmsBox = document.getElementById('demoSmsBox');
+    const demoOtpValue = document.getElementById('demoOtpValue');
+    const resendInfo = document.getElementById('resendInfo');
 
     let generatedOtp = '';
+    let otpExpiryTimer = null;
+    let resendTimer = null;
+    const RESEND_SECONDS = 30; // seconds before user can resend in demo
+    const OTP_VALID_SECONDS = 300; // demo OTP valid duration (5 minutes)
+
+    function normalizePhone(p) {
+      return p.replace(/\s+/g, '').replace(/[^+\d]/g, '');
+    }
+
+    function isLikelyPhoneNumber(p) {
+      // Very simple check: at least 10 digits (allow leading +country)
+      const digits = p.replace(/\D/g, '');
+      return digits.length >= 10;
+    }
+
+    function startResendCountdown(seconds) {
+      let remaining = seconds;
+      sendOtpBtn.disabled = true;
+      resendInfo.style.display = 'block';
+      resendInfo.innerText = `You can resend OTP in ${remaining}s`;
+
+      resendTimer = setInterval(() => {
+        remaining--;
+        if (remaining <= 0) {
+          clearInterval(resendTimer);
+          sendOtpBtn.disabled = false;
+          resendInfo.innerText = 'You can resend the OTP now.';
+          setTimeout(() => { resendInfo.style.display = 'none'; }, 2000);
+        } else {
+          resendInfo.innerText = `You can resend OTP in ${remaining}s`;
+        }
+      }, 1000);
+    }
+
+    function startOtpExpiry(seconds) {
+      // Clear previous expiry timer if any
+      if (otpExpiryTimer) clearTimeout(otpExpiryTimer);
+      otpExpiryTimer = setTimeout(() => {
+        generatedOtp = '';
+        demoSmsBox.style.display = 'none';
+        otpMessage.innerText = 'OTP expired. Please resend.';
+        otpInput.style.display = 'none';
+        verifyOtpBtn.style.display = 'none';
+      }, seconds * 1000);
+    }
 
     sendOtpBtn.addEventListener('click', () => {
-      const phone = phoneInput.value.trim();
-      if(phone.length < 10){
-        alert("Enter a valid phone number");
+      const phoneRaw = phoneInput.value.trim();
+      const phone = normalizePhone(phoneRaw);
+
+      if (!isLikelyPhoneNumber(phone)) {
+        alert("Enter a valid phone number (at least 10 digits).");
+        phoneInput.focus();
         return;
       }
+
+      // Generate 4-6 digit OTP (here 4 digits to match earlier behavior)
       generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-      console.log("OTP sent:", generatedOtp); // For testing/demo only
-      otpMessage.innerText = "OTP sent to your phone!";
-      otpInput.style.display = "block";
-      verifyOtpBtn.style.display = "block";
+
+      // Demo: show OTP visibly on the page (do not do this in production)
+      demoOtpValue.innerText = generatedOtp;
+      demoSmsBox.style.display = 'block';
+
+      // Show OTP input and verify button
+      otpInput.style.display = 'block';
+      verifyOtpBtn.style.display = 'block';
+      otpInput.value = '';
+      otpMessage.innerText = "OTP sent to your phone (demo).";
+
+      console.log("DEMO OTP for", phone, ":", generatedOtp); // helpful while testing
+
+      // Start resend lock and OTP expiry
+      startResendCountdown(RESEND_SECONDS);
+      startOtpExpiry(OTP_VALID_SECONDS);
     });
 
     verifyOtpBtn.addEventListener('click', () => {
       const otp = otpInput.value.trim();
-      if(otp === generatedOtp){
-        otpMessage.innerText = "Login Successful!";
+
+      if (!generatedOtp) {
+        otpMessage.innerText = "No active OTP. Please request a new OTP.";
+        return;
+      }
+
+      if (otp === generatedOtp) {
+        otpMessage.style.color = 'green';
+        otpMessage.innerText = "Login Successful! Redirecting...";
+        // Clear timers
+        if (resendTimer) clearInterval(resendTimer);
+        if (otpExpiryTimer) clearTimeout(otpExpiryTimer);
+
+        // In a real app you would send OTP verification to the server here.
         setTimeout(() => {
           window.location.href = "dashboard.html"; // Redirect after login
-        }, 1000);
+        }, 800);
       } else {
+        otpMessage.style.color = 'crimson';
         otpMessage.innerText = "Invalid OTP. Try again.";
       }
     });
 
+    // Pressing Enter on phone field should click Send OTP, on otp field should click Verify
+    phoneInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') sendOtpBtn.click();
+    });
+    otpInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') verifyOtpBtn.click();
+    });
+
     // ----------------- Google Login -----------------
     window.onload = function() {
-      google.accounts.id.initialize({
-        client_id: "970706649931-jh3jhoqe03b5dnv2ctj4jemf7fsbbbr5.apps.googleusercontent.com", // <-- Replace with your actual client ID
-        callback: handleCredentialResponse
-      });
-      google.accounts.id.renderButton(
-        document.getElementById("g_id_signin"),
-        { theme: "outline", size: "large", width: "250" }  // customization
-      );
-      google.accounts.id.prompt(); // auto prompt
+      // Replace client_id with your own OAuth client ID if you have one.
+      // For demo this will still render the button, but login requires a valid client id.
+      const CLIENT_ID = "970706649931-jh3jhoqe03b5dnv2ctj4jemf7fsbbbr5.apps.googleusercontent.com";
+
+      if (window.google && google.accounts && google.accounts.id) {
+        google.accounts.id.initialize({
+          client_id: CLIENT_ID,
+          callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("g_id_signin"),
+          { theme: "outline", size: "large", width: "250" }  // customization
+        );
+        // Optional automatic prompt; can be removed if you don't want the popup
+        google.accounts.id.prompt();
+      } else {
+        console.warn('Google Identity Services not loaded yet.');
+      }
     };
 
     function handleCredentialResponse(response) {
       const jwt = response.credential;
 
-      // Decode JWT to get user info
-      const base64Url = jwt.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const user = JSON.parse(decodeURIComponent(atob(base64).split('').map(c =>
-        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-      ).join('')));
-
-      console.log("Google User Info:", user);
-
-      // Redirect after Google login
-      window.location.href = "dashboard.html"; // redirect to dashboard
+      // Decode JWT to get user info (simple client-side decode)
+      try {
+        const base64Url = jwt.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+          '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+        ).join(''));
+        const user = JSON.parse(jsonPayload);
+        console.log("Google User Info:", user);
+        // Redirect after Google login
+        window.location.href = "dashboard.html";
+      } catch (err) {
+        console.error('Failed to decode Google credential', err);
+      }
     }
   </script>
 
