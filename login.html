@@ -1,299 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VoteVibes | Login</title>
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | VoteVibes</title>
+  <link rel="stylesheet" href="./login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #f4f6f9;
-      margin: 0;
-      padding: 0;
-    }
-
-    header .navbar {
-      padding: 15px 40px;
-      background: #001a66;
-      color: #fff;
+    /* ===== Google Button Styling ===== */
+    .google-signin {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      justify-content: center;
+      margin-top: 15px;
     }
 
-    header .navbar .logo {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .login-container {
-      max-width: 420px;
-      margin: 80px auto;
-      background: #fff;
-      padding: 30px 25px;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-
-    .login-container h2 {
-      margin-bottom: 20px;
-      color: #001a66;
-    }
-
-    .login-container input {
+    #g_id_signin {
       width: 100%;
-      padding: 12px 15px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      box-sizing: border-box;
     }
 
-    .login-container button {
+    .google-btn-wrapper {
       width: 100%;
-      padding: 12px;
-      background: #001a66;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
+    }
+
+    .custom-google-btn {
+      width: 100%;
+      background-color: white;
+      border: 2px solid black; /* 🔥 Changed border to black */
+      border-radius: 6px;
+      padding: 10px;
       cursor: pointer;
-      margin-top: 10px;
-    }
-
-    .login-container button[disabled] {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .login-container button:hover:not([disabled]) {
-      background: #0040ff;
-    }
-
-    .divider {
-      text-align: center;
-      margin: 20px 0;
-      position: relative;
-    }
-
-    .divider::before,
-    .divider::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 40%;
-      height: 1px;
-      background: #ccc;
-    }
-
-    .divider::before { left: 0; }
-    .divider::after { right: 0; }
-    .divider span { padding: 0 10px; color: #666; }
-
-    .otp-message { color: rgb(16, 168, 16); margin-top: 10px; min-height: 20px; }
-
-    .google-signin { display: flex; justify-content: center; margin-top: 20px; }
-
-    /* Demo SMS box */
-    .demo-sms {
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 10px;
-      background: linear-gradient(180deg, #ffffff 0%, #eef9f1 100%);
-      border: 1px solid #d6f1dd;
-      color: #064d2a;
       font-weight: 600;
-      display: none; /* shown only in demo mode after sending */
-      box-shadow: 0 2px 6px rgba(5,100,50,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #222;
+      transition: 0.3s;
     }
 
-    .small {
-      font-size: 0.9rem;
-      color: #555;
+    .custom-google-btn:hover {
+      background-color: #f2f2f2;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
 
-    .resend-info {
-      margin-top: 8px;
-      font-size: 0.9rem;
-      color: #666;
+    .custom-google-btn img {
+      width: 20px;
+      height: 20px;
     }
-
-    /* responsive */
-    @media (max-width: 480px) {
-      .login-container { margin: 40px 12px; }
-    }
-
   </style>
 </head>
 <body>
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar">
+    <div class="logo"><i class="fa-solid fa-dove"></i> VoteVibes</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="upcoming.html">Upcoming Elections</a></li>
+      <li><a href="register.html">Election Registration</a></li>
+    </ul>
+  </nav>
 
-  <header class="navbar">
-    <div class="logo">
-      <i class="fa-solid fa-dove"></i> VoteVibes
+  <!-- ===== Main Content ===== -->
+  <main>
+    <div class="form-container">
+      <h2>Login</h2>
+
+      <form id="loginForm">
+        <label for="identifier">Roll Number / Admin ID / Email</label>
+        <input type="text" id="identifier" placeholder="Enter Roll Number, Admin ID, or Email" required>
+
+        <label for="password">Password</label>
+        <div class="password-container">
+          <input type="password" id="password" placeholder="Enter your password" required>
+          <i class="fa-solid fa-eye" id="togglePassword"></i>
+        </div>
+
+        <div class="forgot-link">
+          <a href="forgot.html">Forgot Password?</a>
+        </div>
+
+        <!-- Hidden OTP container -->
+        <div id="otpContainer">
+          <label>Enter OTP</label>
+          <input type="text" id="otp" placeholder="Enter OTP">
+        </div>
+
+        <button type="button" class="btn btn-secondary" id="sendOtpBtn">Send OTP</button>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider" style="text-align:center; margin:20px 0; position:relative;">
+        <span style="background:#fff; padding:0 10px; color:#666;">OR</span>
+        <hr style="position:absolute; top:50%; left:0; width:100%; border:none; border-top:1px solid #ccc; z-index:-1;">
+      </div>
+
+      <!-- Google Sign-In (Custom Button) -->
+      <div class="google-signin">
+        <div class="google-btn-wrapper">
+          <div class="custom-google-btn" id="googleCustomBtn">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+            <span>Continue with Google</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden default Google sign-in element -->
+      <div id="g_id_signin" style="display:none;"></div>
     </div>
-  </header>
+  </main>
 
-  <div class="login-container">
-    <h2>Login to VoteVibes</h2>
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <p>© 2025 VoteVibes. All Rights Reserved.</p>
+  </footer>
 
-    <!-- Phone Number Login -->
-    <input type="text" id="phone" placeholder="Enter Phone Number (e.g. +91xxxxxxxxxx or 9876543210)" />
-    <button id="sendOtpBtn">Send OTP (Demo)</button>
-
-    <input type="text" id="otp" placeholder="Enter OTP" style="display:none;" maxlength="6" />
-    <button id="verifyOtpBtn" style="display:none;">Verify OTP</button>
-
-    <div class="otp-message" id="otpMessage"></div>
-
-    <!-- Demo "SMS" shown on page (for testing only) -->
-    <div class="demo-sms" id="demoSmsBox" aria-live="polite">
-      Demo OTP: <span id="demoOtpValue"></span>
-      <div class="small" style="margin-top:6px;">This is a demo OTP shown on screen for testing. In production you would not show this.</div>
-    </div>
-
-    <div class="resend-info small" id="resendInfo" style="display:none;"></div>
-
-    <div class="divider"><span>OR</span></div>
-
-    <!-- Google Login -->
-    <div class="google-signin">
-      <div id="g_id_signin" data-type="standard"></div>
-    </div>
-  </div>
-
-  <!-- Google Identity Services -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-
+  <!-- ===== Scripts ===== -->
   <script>
-    // ----------------- Phone OTP System (Demo) -----------------
     const sendOtpBtn = document.getElementById('sendOtpBtn');
-    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
-    const phoneInput = document.getElementById('phone');
-    const otpInput = document.getElementById('otp');
-    const otpMessage = document.getElementById('otpMessage');
-    const demoSmsBox = document.getElementById('demoSmsBox');
-    const demoOtpValue = document.getElementById('demoOtpValue');
-    const resendInfo = document.getElementById('resendInfo');
-
-    let generatedOtp = '';
-    let otpExpiryTimer = null;
-    let resendTimer = null;
-    const RESEND_SECONDS = 30; // seconds before user can resend in demo
-    const OTP_VALID_SECONDS = 300; // demo OTP valid duration (5 minutes)
-
-    function normalizePhone(p) {
-      return p.replace(/\s+/g, '').replace(/[^+\d]/g, '');
-    }
-
-    function isLikelyPhoneNumber(p) {
-      // Very simple check: at least 10 digits (allow leading +country)
-      const digits = p.replace(/\D/g, '');
-      return digits.length >= 10;
-    }
-
-    function startResendCountdown(seconds) {
-      let remaining = seconds;
-      sendOtpBtn.disabled = true;
-      resendInfo.style.display = 'block';
-      resendInfo.innerText = `You can resend OTP in ${remaining}s`;
-
-      resendTimer = setInterval(() => {
-        remaining--;
-        if (remaining <= 0) {
-          clearInterval(resendTimer);
-          sendOtpBtn.disabled = false;
-          resendInfo.innerText = 'You can resend the OTP now.';
-          setTimeout(() => { resendInfo.style.display = 'none'; }, 2000);
-        } else {
-          resendInfo.innerText = `You can resend OTP in ${remaining}s`;
-        }
-      }, 1000);
-    }
-
-    function startOtpExpiry(seconds) {
-      // Clear previous expiry timer if any
-      if (otpExpiryTimer) clearTimeout(otpExpiryTimer);
-      otpExpiryTimer = setTimeout(() => {
-        generatedOtp = '';
-        demoSmsBox.style.display = 'none';
-        otpMessage.innerText = 'OTP expired. Please resend.';
-        otpInput.style.display = 'none';
-        verifyOtpBtn.style.display = 'none';
-      }, seconds * 1000);
-    }
+    const otpContainer = document.getElementById('otpContainer');
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+    const loginForm = document.getElementById('loginForm');
 
     sendOtpBtn.addEventListener('click', () => {
-      const phoneRaw = phoneInput.value.trim();
-      const phone = normalizePhone(phoneRaw);
-
-      if (!isLikelyPhoneNumber(phone)) {
-        alert("Enter a valid phone number (at least 10 digits).");
-        phoneInput.focus();
-        return;
-      }
-
-      // Generate 4-6 digit OTP (here 4 digits to match earlier behavior)
-      generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-
-      // Demo: show OTP visibly on the page (do not do this in production)
-      demoOtpValue.innerText = generatedOtp;
-      demoSmsBox.style.display = 'block';
-
-      // Show OTP input and verify button
-      otpInput.style.display = 'block';
-      verifyOtpBtn.style.display = 'block';
-      otpInput.value = '';
-      otpMessage.innerText = "OTP sent to your phone (demo).";
-
-      console.log("DEMO OTP for", phone, ":", generatedOtp); // helpful while testing
-
-      // Start resend lock and OTP expiry
-      startResendCountdown(RESEND_SECONDS);
-      startOtpExpiry(OTP_VALID_SECONDS);
+      otpContainer.classList.add('show');
+      sendOtpBtn.disabled = true;
+      sendOtpBtn.innerText = 'OTP Sent';
     });
 
-    verifyOtpBtn.addEventListener('click', () => {
-      const otp = otpInput.value.trim();
+    togglePassword.addEventListener('click', () => {
+      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordField.setAttribute('type', type);
+      togglePassword.classList.toggle('fa-eye');
+      togglePassword.classList.toggle('fa-eye-slash');
+    });
 
-      if (!generatedOtp) {
-        otpMessage.innerText = "No active OTP. Please request a new OTP.";
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = document.getElementById('identifier').value.trim();
+      const pass = passwordField.value.trim();
+
+      if (!id || !pass) {
+        alert('Please fill all fields.');
         return;
       }
 
-      if (otp === generatedOtp) {
-        otpMessage.style.color = 'green';
-        otpMessage.innerText = "Login Successful! Redirecting...";
-        // Clear timers
-        if (resendTimer) clearInterval(resendTimer);
-        if (otpExpiryTimer) clearTimeout(otpExpiryTimer);
-
-        // In a real app you would send OTP verification to the server here.
-        setTimeout(() => {
-          window.location.href = "dashboard.html"; // Redirect after login
-        }, 800);
+      if (id.toLowerCase() === 'iit2024028' && pass === 'admin123') {
+        alert('Admin login successful!');
+        window.location.href = 'admin.html';
       } else {
-        otpMessage.style.color = 'crimson';
-        otpMessage.innerText = "Invalid OTP. Try again.";
+        alert('Login successful!');
+        window.location.href = 'dashboard.html';
       }
     });
+  </script>
 
-    // Pressing Enter on phone field should click Send OTP, on otp field should click Verify
-    phoneInput.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter') sendOtpBtn.click();
-    });
-    otpInput.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter') verifyOtpBtn.click();
-    });
-
-    // ----------------- Google Login -----------------
+  <!-- ===== Google Sign-In ===== -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
     window.onload = function() {
-      // Replace client_id with your own OAuth client ID if you have one.
-      // For demo this will still render the button, but login requires a valid client id.
       const CLIENT_ID = "970706649931-jh3jhoqe03b5dnv2ctj4jemf7fsbbbr5.apps.googleusercontent.com";
 
       if (window.google && google.accounts && google.accounts.id) {
@@ -301,12 +167,15 @@
           client_id: CLIENT_ID,
           callback: handleCredentialResponse
         });
+
         google.accounts.id.renderButton(
           document.getElementById("g_id_signin"),
-          { theme: "outline", size: "large", width: "250" }  // customization
+          { theme: "outline", size: "large", width: 320 }
         );
-        // Optional automatic prompt; can be removed if you don't want the popup
-        google.accounts.id.prompt();
+
+        document.getElementById("googleCustomBtn").addEventListener("click", () => {
+          google.accounts.id.prompt();
+        });
       } else {
         console.warn('Google Identity Services not loaded yet.');
       }
@@ -314,8 +183,6 @@
 
     function handleCredentialResponse(response) {
       const jwt = response.credential;
-
-      // Decode JWT to get user info (simple client-side decode)
       try {
         const base64Url = jwt.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -324,13 +191,11 @@
         ).join(''));
         const user = JSON.parse(jsonPayload);
         console.log("Google User Info:", user);
-        // Redirect after Google login
         window.location.href = "dashboard.html";
       } catch (err) {
         console.error('Failed to decode Google credential', err);
       }
     }
   </script>
-
 </body>
 </html>
