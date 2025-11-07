@@ -10,6 +10,9 @@ body {
   background: #f5f7fa;
   color: #333;
   line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* ===== Navbar ===== */
@@ -20,6 +23,7 @@ body {
   padding: 12px 40px;
   background: #001a66;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: relative;
 }
 
 .logo {
@@ -34,12 +38,6 @@ body {
 .logo i {
   color: #ffcc00;
   font-size: 1.4em;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.logo:hover i {
-  transform: rotate(-10deg) scale(1.1);
-  color: #ffd633;
 }
 
 .nav-links {
@@ -64,6 +62,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  position: relative;
 }
 
 .btn-outline {
@@ -80,6 +79,50 @@ body {
   background: #ffcc00;
   border-color: #ffcc00;
   color: #001a66;
+}
+
+/* Profile icon & dropdown */
+.profile-icon {
+  font-size: 36px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  display: none;
+  min-width: 140px;
+  z-index: 1000;
+}
+
+.profile-dropdown.show {
+  display: block;
+}
+
+.profile-dropdown ul {
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+}
+
+.profile-dropdown ul li {
+  padding: 8px 20px;
+}
+
+.profile-dropdown ul li a {
+  text-decoration: none;
+  color: #001a66;
+  font-weight: 500;
+  display: block;
+}
+
+.profile-dropdown ul li a:hover {
+  background: #f5f7fa;
 }
 
 /* ===== Hero ===== */
@@ -127,6 +170,8 @@ body {
 .btn:hover {
   background: #e6b800;
 }
+
+/* Remaining sections (Countdown, About, Features, Stats, Footer) can remain as previously coded */
 
 /* ===== Countdown ===== */
 .countdown {
@@ -284,3 +329,85 @@ body {
   text-align: center;
   font-size: 0.9em;
 }
+
+/* Profile dropdown */
+.profile-menu {
+  position: relative;
+}
+
+.profile-icon {
+  font-size: 1.8em;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.profile-icon:hover {
+  color: #ffcc00;
+}
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  width: 160px;
+  overflow: hidden;
+  animation: slideDown 0.25s ease;
+  z-index: 10;
+}
+
+.dropdown a {
+  padding: 10px 15px;
+  color: #001a66;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.3s;
+}
+
+.dropdown a:hover {
+  background: #f5f7fa;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Profile container */
+.profile-container {
+  width: 420px;
+  background: #fff;
+  margin: 80px auto;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.profile-container h2 {
+  text-align: center;
+  color: #001a66;
+  margin-bottom: 25px;
+}
+
+.profile-avatar {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-avatar i {
+  font-size: 4em;
+  color: #001a66;
+}
+
