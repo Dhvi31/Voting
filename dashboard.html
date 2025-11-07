@@ -3,95 +3,208 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | VoteVibes</title>
+  <title>Voter Dashboard | VoteVibes</title>
   <link rel="stylesheet" href="dashboard.css">
-  <!-- Font Awesome for dove icon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="logo"><i class="fa-solid fa-dove"></i> VoteVibes</div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="dashboard.html" class="active">Voter Dashboard</a></li>
-      <li><a href="candidate.html">Candidate</a></li>
-      <li><a href="upcoming.html">Upcoming Elections</a></li>
-      <li><a href="results.html">Results</a></li>
-      <li><a href="about.html">About Us</a></li>
-    </ul>
-    <div class="nav-actions">
-      <a href="register.html" class="btn">Register</a>
-      <a href="login.html" class="btn-outline">Login</a>
+<!-- Navbar -->
+<header class="navbar">
+  <div class="logo"><i class="fa-solid fa-dove"></i> VoteVibes</div>
+  <ul class="nav-links"></ul>
+
+  <div class="nav-actions">
+    <div class="profile-menu">
+      <img id="profilePic" class="profile-icon" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile" />
+      <div class="dropdown hidden">
+        <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+        <a onclick="logoutUser()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
     </div>
-  </header>
+  </div>
+</header>
 
-  <!-- Welcome Section -->
-  <section class="welcome">
-    <h2>Welcome, Voter!</h2>
-    <p>Check your voting status, upcoming elections, and notifications below.</p>
-  </section>
+<!-- Welcome -->
+<section class="welcome">
+  <h2>Welcome, <span id="voterName">Voter</span> 👋</h2>
+  <p>Your participation makes democracy stronger!</p>
+</section>
 
-  <!-- Dashboard Cards -->
-  <main class="features">
+<!-- Dashboard -->
+<main class="features">
 
-    <!-- Voting Status -->
-    <div class="card">
-      <h3>Voting Status</h3>
-      <p>You have not voted yet in the upcoming City Council Election.</p>
-      <a href="ballot.html" class="small-btn">Go to Ballot</a>
+  <!-- Active Elections Summary -->
+  <div class="card" id="activeElectionsCard">
+    <h3>Active Elections</h3>
+    <p id="activeElectionText">Loading your election data...</p>
+    <a href="active.html" id="voteBtn" class="small-btn">View & Vote</a>
+  </div>
+
+  <!-- Upcoming Elections -->
+  <div class="card">
+    <h3>Upcoming Elections</h3>
+    <p>You have <strong>1 upcoming election</strong> to vote in.</p>
+    <a href="upcoming.html" class="small-btn">View Elections</a>
+  </div>
+
+  <!-- Results -->
+  <div class="card">
+    <h3>Election Results</h3>
+    <p>Check the latest election outcomes.</p>
+    <a href="result.html" class="small-btn">View Results</a>
+  </div>
+
+  <!-- Voting History -->
+  <div class="card" id="votingHistoryCard">
+    <h3>Voting History</h3>
+    <div id="votingHistoryList">
+      <p>Loading your voting record...</p>
     </div>
+  </div>
 
-    <!-- Notifications -->
-    <div class="card notifications">
-      <h3>Notifications</h3>
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-content">
+    <div>
+      <h4>About VoteVibes</h4>
+      <p>Secure online voting platform for students.</p>
+    </div>
+    <div>
+      <h4>Links</h4>
       <ul>
-        <li>City Council Election starts on 15 Oct 2025</li>
-        <li>Student Union Election registration closes on 10 Nov 2025</li>
-        <li>Update your profile before voting</li>
+        <li><a href="active.html">Active Elections</a></li>
+        <li><a href="upcoming.html">Upcoming</a></li>
+        <li><a href="result.html">Results</a></li>
       </ul>
     </div>
-
-    <!-- Upcoming Elections -->
-    <div class="card">
-      <h3>Upcoming Elections</h3>
+    <div>
+      <h4>Contact</h4>
       <ul>
-        <li>City Council Election - 15 Oct 2025</li>
-        <li>Student Union Election - 20 Nov 2025</li>
-        <li>Local Board Election - 05 Dec 2025</li>
+        <li>Email: support@votevibes.com</li>
       </ul>
     </div>
+  </div>
+  <div class="footer-bottom">&copy; 2025 VoteVibes. All Rights Reserved.</div>
+</footer>
+<style>
+  /* ===== Profile Icon Styling ===== */
+.profile-icon {
+  width: 45px;                /* Normal size */
+  height: 45px;
+  border-radius: 50%;         /* Makes it perfectly circular */
+  object-fit: cover;          /* Keeps image ratio correct */
+  border: 2px solid #fff;     /* Optional white outline for nice look */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Soft shadow */
+  cursor: pointer;            /* Looks clickable */
+  transition: transform 0.2s ease;
+}
 
-  </main>
+.profile-icon:hover {
+  transform: scale(1.05);     /* Small zoom on hover */
+}
+</style>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-content">
-      <div>
-        <h4>About VoteVibes</h4>
-        <p>Secure online voting platform for all students.</p>
-      </div>
-      <div>
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="upcoming.html">Upcoming Elections</a></li>
-          <li><a href="results.html">Results</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Contact</h4>
-        <ul>
-          <li>Email: support@votevibes.com</li>
-          <li>Phone: +91 1234567890</li>
-        </ul>
-      </div>
+<script>
+/* ===== Navbar Dropdown ===== */
+const profileIcon = document.querySelector(".profile-icon");
+const dropdown = document.querySelector(".dropdown");
+profileIcon.addEventListener("click", (e) => {
+  dropdown.classList.toggle("hidden");
+  e.stopPropagation();
+});
+document.addEventListener("click", (e) => {
+  if (!dropdown.contains(e.target)) dropdown.classList.add("hidden");
+});
+
+/* ===== User Data ===== */
+window.onload = function () {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user) {
+    document.getElementById("voterName").innerText = user.name || "Voter";
+    if (user.picture) {
+      document.getElementById("profilePic").src = user.picture;
+    }
+  } else {
+    document.getElementById("voterName").innerText = "Voter";
+  }
+};
+
+/* ===== Active Elections ===== */
+const elections = [
+  { name: "Student Council Election 2025", isActive: true },
+  { name: "Sports Captain Election 2025", isActive: true },
+  { name: "Library Committee Election", isActive: false }
+];
+
+const activeElections = elections.filter(e => e.isActive);
+const activeCount = activeElections.length;
+
+const electionText = document.getElementById("activeElectionText");
+const voteBtn = document.getElementById("voteBtn");
+
+if (activeCount === 0) {
+  electionText.innerHTML = "No active elections at the moment.";
+  voteBtn.style.display = "none";
+} else {
+  if (!user) {
+    electionText.innerHTML = `You have <strong>${activeCount}</strong> active election${activeCount > 1 ? "s" : ""}. Please <a href="login.html">log in</a> to vote.`;
+  } else {
+    // Count how many active elections user has voted in
+    const votes = user.votes || [];
+    const votedCount = votes.filter(v => activeElections.some(e => e.name === v.election)).length;
+
+    if (votedCount === activeCount) {
+      electionText.innerHTML = `✅ You’ve voted in all <strong>${activeCount}</strong> active election${activeCount > 1 ? "s" : ""}.`;
+      voteBtn.innerText = "View Active Elections";
+    } else if (votedCount > 0) {
+      electionText.innerHTML = `🟡 You’ve voted in <strong>${votedCount}</strong> of <strong>${activeCount}</strong> active election${activeCount > 1 ? "s" : ""}.`;
+      voteBtn.innerText = "Continue Voting";
+    } else {
+      electionText.innerHTML = `🟢 There ${activeCount > 1 ? "are" : "is"} <strong>${activeCount}</strong> active election${activeCount > 1 ? "s" : ""} available.`;
+      voteBtn.innerText = "Go to Active Elections";
+    }
+  }
+}
+
+/* ===== Voting History ===== */
+const historyList = document.getElementById("votingHistoryList");
+
+if (user?.votes && user.votes.length > 0) {
+  historyList.innerHTML = user.votes.map(v => `
+    <div class="history-item">
+      <p><strong>${v.election}</strong></p>
+      <p>🗳️ You voted for: <b>${v.candidate}</b></p>
+      <p><small>${v.date}</small></p>
+      <hr>
     </div>
-    <div class="footer-bottom">
-      &copy; 2025 VoteVibes. All Rights Reserved.
-    </div>
-  </footer>
+  `).join("");
+} else {
+  historyList.innerHTML = "<p>You haven’t voted in any elections yet.</p>";
+}
+
+/* ===== Logout ===== */
+function logoutUser() {
+  localStorage.removeItem("user");
+  window.location.href = "login.html";
+}
+</script>
+
+<style>
+.history-item {
+  margin-bottom: 10px;
+  padding: 5px 0;
+  color: #333;
+}
+.history-item hr {
+  border: none;
+  border-bottom: 1px solid #eee;
+  margin-top: 5px;
+}
+</style>
 
 </body>
 </html>
