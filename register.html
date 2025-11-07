@@ -1,96 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register for Election | VoteVibes</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Vote Portal | Register</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="register.css">
+  <link rel="stylesheet" href="register.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <div class="container">
-      <div class="logo">
-        <i class="fas fa-dove"></i>
-        <h1>VoteVibes</h1>
-      </div>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="upcoming.html">Upcoming Elections</a></li>
-          <li><a href="dashboard.html">Dashboard</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
 
-  <!-- Form Section -->
-  <main>
-    <section class="form-section">
-      <h2>Register for Upcoming Election</h2>
-      <form id="electionRegistrationForm">
-        <label for="election">Select Election</label>
-        <select id="election" name="election" required>
-          <option value="">--Select Election--</option>
-          <option value="student_council">Student Council 2025</option>
-          <option value="tech_club_president">Tech Club President</option>
-          <option value="cultural_committee">Cultural Committee</option>
-        </select>
-
-        <label for="role">Your Role</label>
-        <select id="role" name="role" required>
-          <option value="">--Select Role--</option>
-          <option value="candidate">Candidate</option>
-          <option value="voter">Voter</option>
-        </select>
-
-        <label for="district">District / Constituency</label>
-        <input type="text" id="district" name="district" placeholder="Optional if not applicable">
-
-        <label for="manifesto">Manifesto / Reason for Registering</label>
-        <textarea id="manifesto" name="manifesto" placeholder="Write your manifesto or reason for registering"></textarea>
-
-        <button type="submit">Register</button>
-      </form>
-    </section>
-  </main>
-
-  <!-- Toast Notification -->
-  <div id="toast" class="toast">
-    <i class="fas fa-check-circle"></i>
-    <span>Registration Successful!</span>
+<!-- ===== Navbar ===== -->
+<nav class="navbar">
+  <div class="logo">
+    <i class="fa-solid fa-dove"></i> VoteVibes
   </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 VoteVibes. All rights reserved.</p>
-  </footer>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="login.html" id="loginBtn">Login</a></li>
+    <li><a class="active" href="register.html" id="registerBtn">Register</a></li>
+  </ul>
+</nav>
 
-  <!-- JS -->
-  <script>
-    const form = document.getElementById("electionRegistrationForm");
-    const toast = document.getElementById("toast");
+<main>
+  <!-- ===== Registration Form ===== -->
+  <div class="form-container">
+    <h2>Create Your Account</h2>
 
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
+    <form id="registerForm">
+      <label>Full Name</label>
+      <input type="text" id="name" placeholder="Enter your full name" required />
 
-      // Show toast
-      toast.classList.add("show");
+      <label>Student ID</label>
+      <input type="text" id="studentId" placeholder="Roll / Enrollment Number" required />
 
-      // Hide toast after 2 seconds and redirect
-      setTimeout(() => {
-        toast.classList.remove("show");
-        window.location.href = "success.html";
-      }, 2200);
-    });
-  </script>
+      <label>Email</label>
+      <input type="email" id="email" placeholder="example@college.edu" required />
+
+      <label>Password</label>
+      <div class="password-container">
+        <input type="password" id="password" placeholder="Enter password" required />
+        <i class="fa-solid fa-eye" onclick="togglePassword()"></i>
+      </div>
+
+      <label>Confirm Password</label>
+      <div class="password-container">
+        <input type="password" id="cpassword" placeholder="Confirm password" required />
+        <i class="fa-solid fa-eye" onclick="toggleCPassword()"></i>
+      </div>
+
+      <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+
+    <p class="login-text">
+      Already have an account?
+      <a href="login.html">Login</a>
+    </p>
+  </div>
+</main>
+
+<!-- ===== Footer ===== -->
+<footer class="site-footer">
+  <p>© 2025 E-Vote Portal | All Rights Reserved</p>
+</footer>
+
+<!-- ===== Scripts ===== -->
+<script>
+function togglePassword() {
+  let x = document.getElementById("password");
+  x.type = x.type === "password" ? "text" : "password";
+}
+function toggleCPassword() {
+  let x = document.getElementById("cpassword");
+  x.type = x.type === "password" ? "text" : "password";
+}
+
+// ===== Registration Logic =====
+document.getElementById("registerForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value.trim();
+  const studentId = document.getElementById("studentId").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const cpassword = document.getElementById("cpassword").value;
+
+  if (password !== cpassword) {
+    showPopup("❌ Passwords do not match!", "error");
+    return;
+  }
+
+  // Store user in localStorage (temporary)
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const exists = users.find((u) => u.email === email);
+
+  if (exists) {
+    showPopup("⚠️ Email already registered!", "warning");
+    return;
+  }
+
+  const newUser = { name, studentId, email, password, hasVoted: false };
+  users.push(newUser);
+  localStorage.setItem("users", JSON.stringify(users));
+
+  showPopup("✅ Registration successful! Redirecting to login...", "success");
+  setTimeout(() => (window.location.href = "login.html"), 2500);
+});
+
+// ===== Custom Popup Notification =====
+function showPopup(message, type = "success") {
+  const popup = document.createElement("div");
+  popup.className = `popup-message popup-${type}`;
+  popup.innerText = message;
+
+  document.body.appendChild(popup);
+  setTimeout(() => popup.classList.add("show"), 10);
+  setTimeout(() => {
+    popup.classList.remove("show");
+    setTimeout(() => popup.remove(), 300);
+  }, 4000);
+}
+
+// ===== Hide login/register if already logged in =====
+document.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("loggedIn")) {
+    document.getElementById("loginBtn").style.display = "none";
+    document.getElementById("registerBtn").style.display = "none";
+  }
+});
+</script>
+
+<!-- ===== Popup Styles ===== -->
+<style>
+.popup-message {
+  position: fixed;
+  top: 25px;
+  right: 25px;
+  background: #ffffff;
+  color: #001a66;
+  border-left: 5px solid #ffcc00;
+  padding: 14px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+  font-size: 0.95rem;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.4s ease;
+  z-index: 9999;
+}
+.popup-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.popup-success {
+  border-left-color: #00b300;
+}
+.popup-error {
+  border-left-color: #ff3333;
+}
+.popup-warning {
+  border-left-color: #ffcc00;
+}
+</style>
+
 </body>
 </html>
