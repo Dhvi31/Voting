@@ -1,37 +1,30 @@
-// ==============================
-// Election Registration Form
-// ==============================
-document.getElementById('electionRegistrationForm').addEventListener('submit', function(e) {
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("registerForm");
+
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const election = document.getElementById('election').value;
-    const role = document.getElementById('role').value;
-    const district = document.getElementById('district').value.trim();
-    const manifesto = document.getElementById('manifesto').value.trim();
+    const name = document.getElementById("name").value.trim();
+    const studentId = document.getElementById("studentId").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const cpassword = document.getElementById("cpassword").value.trim();
 
-    if(!election || !role){
-        alert('Please select an election and role.');
-        return;
+    if (!name || !studentId || !email || !password || !cpassword) {
+      alert("⚠️ Please fill all fields.");
+      return;
     }
 
-    console.log({ election, role, district, manifesto });
-    alert('Successfully registered for the election! (mock)');
-    this.reset();
-});
+    if (password !== cpassword) {
+      alert("❌ Passwords do not match!");
+      return;
+    }
 
-// ==============================
-// Dark Mode Toggle
-// ==============================
-const toggleButton = document.getElementById('darkModeToggle');
-toggleButton.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    toggleButton.textContent = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
-});
+    const user = { name, studentId, email, password };
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("loggedIn", "true");
 
-// ==============================
-// Auto-detect system dark mode
-// ==============================
-if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
-    document.body.classList.add('dark-mode');
-    toggleButton.textContent = '☀️ Light Mode';
-}
+    alert("✅ Registration Successful! Redirecting...");
+    window.location.href = "login.html";
+  });
+});
