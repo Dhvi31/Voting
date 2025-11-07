@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile | VoteVibes</title>
+  <link rel="stylesheet" href="profile.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo"><i class="fa-solid fa-dove"></i> VoteVibes</div>
+    <div class="profile-menu">
+      <i class="fa-solid fa-circle-user profile-icon"></i>
+      <div class="dropdown hidden">
+        <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="index.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <div class="profile-container">
+      <h2>Your Profile</h2>
+
+      <div class="profile-card">
+        <div class="profile-avatar">
+          <i class="fa-solid fa-circle-user"></i>
+        </div>
+
+        <form id="user-profile">
+          <label>Full Name</label>
+          <input type="text" value="Nithya Lakshmi" readonly>
+
+          <label>Email</label>
+          <input type="email" value="nithya@example.com" readonly>
+
+          <label>Role</label>
+          <select disabled>
+            <option value="Voter" selected>Voter</option>
+            <option value="Candidate">Candidate</option>
+            <option value="Admin">Admin</option>
+          </select>
+
+          <label>Roll Number / Admin ID</label>
+          <input type="text" value="IIITA2028XX" readonly>
+
+          <div class="btn-row">
+            <button type="button" class="btn btn-edit">Edit Info</button>
+            <button type="submit" class="btn btn-save" disabled>Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p>© 2025 VoteVibes. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    const profileIcon = document.querySelector(".profile-icon");
+    const dropdown = document.querySelector(".dropdown");
+
+    // Toggle dropdown
+    profileIcon.addEventListener("click", (e) => {
+      dropdown.classList.toggle("hidden");
+      e.stopPropagation();
+    });
+
+    // Close dropdown if clicking outside
+    document.addEventListener("click", (e) => {
+      if (!dropdown.classList.contains("hidden") && !dropdown.contains(e.target) && e.target !== profileIcon) {
+        dropdown.classList.add("hidden");
+      }
+    });
+
+    // Editable fields
+    const form = document.getElementById("user-profile");
+    const editBtn = form.querySelector(".btn-edit");
+    const saveBtn = form.querySelector(".btn-save");
+    const inputs = form.querySelectorAll("input, select");
+
+    const isAdmin = false; // change to true if logged-in user is admin
+    editBtn.addEventListener("click", () => {
+      const editing = editBtn.classList.toggle("cancel-mode");
+      inputs.forEach(input => {
+        if (input.previousElementSibling.textContent !== "Role") { // Only non-role editable
+          if (editing) input.removeAttribute("readonly");
+          else input.setAttribute("readonly", true);
+        }
+      });
+      // Admin can edit role
+      if (isAdmin) {
+        const roleSelect = form.querySelector("select");
+        roleSelect.disabled = !editing;
+      }
+      saveBtn.disabled = !editing;
+      editBtn.textContent = editing ? "Cancel" : "Edit Info";
+    });
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      inputs.forEach(input => {
+        if (input.tagName.toLowerCase() === "input") input.setAttribute("readonly", true);
+        else if (input.tagName.toLowerCase() === "select") input.disabled = !isAdmin;
+      });
+      saveBtn.disabled = true;
+      editBtn.textContent = "Edit Info";
+      editBtn.classList.remove("cancel-mode");
+      alert("Changes saved successfully!");
+    });
+  </script>
+</body>
+</html>

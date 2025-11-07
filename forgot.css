@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
+html, body { height: 100%; display: flex; flex-direction: column; background: #f5f7fa; }
+body > main { flex: 1; }
+
+.navbar {
+  display: flex; justify-content: space-between; align-items: center; padding: 12px 40px; background: #001a66;
+}
+.logo { color: #fff; font-weight: bold; font-size: 1.5em; display: flex; align-items: center; gap: 8px; }
+.logo i { color: #ffcc00; }
+.nav-links { list-style: none; display: flex; gap: 20px; }
+.nav-links a { color: #fff; text-decoration: none; font-weight: 500; }
+.nav-links a:hover { color: #ffcc00; }
+
+.form-container {
+  background: #fff; width: 400px; margin: 80px auto; padding: 35px; border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.form-container h2 { text-align: center; color: #001a66; margin-bottom: 25px; }
+label { font-weight: 500; display: block; margin-bottom: 6px; }
+input { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #ccc; }
+
+.btn { width: 100%; padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; margin-bottom: 10px; }
+.btn-primary { background: #001a66; color: #fff; }
+.btn-primary:hover { background: #002699; }
+.btn-secondary { background: #ffcc00; color: #001a66; }
+.btn-secondary:hover { background: #e6b800; }
+
+/* OTP Fade-in */
+#otpContainer { max-height: 0; overflow: hidden; opacity: 0; transition: all 0.5s ease; }
+#otpContainer.show { max-height: 100px; opacity: 1; margin-bottom: 15px; }
+
+.site-footer { background: #001a66; color: white; text-align: center; padding: 20px 0; }

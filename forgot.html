@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password | VoteVibes</title>
+  <link rel="stylesheet" href="./forgot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo"><i class="fa-solid fa-dove"></i> VoteVibes</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <!-- <li><a href="upcoming.html">Upcoming Elections</a></li>
+      <li><a href="register.html">Election Registration</a></li> -->
+    </ul>
+  </nav>
+
+  <main>
+    <div class="form-container">
+      <h2>Forgot Password</h2>
+      <form id="forgotForm">
+        <label>Email</label>
+        <input type="email" placeholder="Enter your registered email" required>
+
+        <!-- OTP container hidden initially -->
+        <div id="otpContainer">
+          <label>Enter OTP</label>
+          <input type="text" placeholder="Enter OTP" id="otpInput">
+        </div>
+
+        <button type="button" class="btn btn-secondary" id="sendOtpBtn">Send OTP</button>
+        <button type="button" class="btn btn-primary" id="verifyBtn">Verify & Continue</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 VoteVibes. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    const sendOtpBtn = document.getElementById('sendOtpBtn');
+    const otpContainer = document.getElementById('otpContainer');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const otpInput = document.getElementById('otpInput');
+
+    // Show OTP input
+    sendOtpBtn.addEventListener('click', () => {
+      otpContainer.classList.add('show');
+      sendOtpBtn.disabled = true;
+      sendOtpBtn.innerText = 'OTP Sent';
+    });
+
+    // Verify OTP (front-end check only)
+    verifyBtn.addEventListener('click', () => {
+      if(otpInput.value.trim() === "") {
+        alert("Please enter the OTP sent to your email.");
+      } else {
+        // Redirect to reset-password page
+        window.location.href = "reset-password.html";
+      }
+    });
+  </script>
+</body>
+</html>
