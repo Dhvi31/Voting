@@ -1,155 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>VoteVibes Admin</title>
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="index.css" />
-  <link rel="stylesheet" href="admin.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | Vote Vibes</title>
+  <link rel="stylesheet" href="about.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
 </head>
+
 <body>
-  <div class="admin-root">
-    <!-- Sidebar -->
-    <aside class="admin-sidebar">
-      <div class="admin-brand">
-        <i class="fa-solid fa-dove"></i>
-        <span>VoteVibes Admin</span>
+  <header class="site-header">
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fa-solid fa-dove"></i>VoteVibes
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="register.html">Register</a></li>
+        <li><a href="dashboard.html">Voter Dashboard</a></li>
+        <li><a href="candidate.html">Candidate</a></li>
+        <li><a href="ballot.html">Vote</a></li>
+        <li><a href="result.html">Results</a></li>
+        <li><a href="upcoming.html">Upcoming Elections</a></li>
+        <li><a href="about.html" class="active">About Us</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="login.html" class="btn-outline">Login</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-content">
+    <!-- Hero Section -->
+    <section class="hero about-hero">
+      <div class="hero-overlay">
+        <h1>About Vote Vibes</h1>
+        <p>
+          Empowering institutions with a secure, transparent, and accessible
+          online voting experience built for the future.
+        </p>
+      </div>
+    </section>
+
+    <!-- Mission -->
+    <section class="features mission">
+      <h2>Our Mission</h2>
+      <p>
+        We aim to make every election—whether for colleges, organizations, or
+        governments—fair, inclusive, and technologically advanced. Our platform
+        uses encryption, blockchain, and a seamless interface to ensure votes
+        are counted securely and transparently.
+      </p>
+    </section>
+
+    <!-- Vision -->
+    <section class="features vision">
+      <h2>Our Vision</h2>
+      <p>
+        To build a trusted digital democracy where every individual can
+        participate confidently, no matter where they are.
+      </p>
+    </section>
+
+    <!-- Team -->
+    <section class="features team">
+      <h2>Meet Our Teams</h2>
+      <div class="feature-cards">
+        <div class="card">
+          <h3>🧩 Blockchain Team</h3>
+          <p>
+            Develops the tamper-proof, transparent voting mechanism using
+            blockchain for verifiable results.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>🗄️ Database Team</h3>
+          <p>
+            Manages secure voter data, results, and election records with
+            top-tier encryption and privacy.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>💻 Frontend & Backend Team</h3>
+          <p>
+            Designs intuitive pages, ensures smooth API integration, and
+            maintains the portal’s performance and accessibility.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div>
+        <h4>About</h4>
+        <ul>
+          <li><a href="#">Right to Vote</a></li>
+          <li><a href="#">Security Standards</a></li>
+          <li><a href="#">Development Team</a></li>
+        </ul>
       </div>
 
-      <nav class="admin-nav">
-        <button class="nav-item active" data-view="dashboard">
-          <i class="fa-regular fa-circle"></i> Dashboard
-        </button>
-        <button class="nav-item" data-view="elections">
-          <i class="fa-regular fa-calendar-days"></i> Elections
-        </button>
-        <button class="nav-item" data-view="candidates">
-          <i class="fa-regular fa-user"></i> Candidates
-        </button>
-        <button class="nav-item" data-view="voters">
-          <i class="fa-regular fa-people-line"></i> Voters
-        </button>
-        <button class="nav-item" data-view="create">
-          <i class="fa-regular fa-square-plus"></i> Create Election
-        </button>
-        <button class="nav-item" id="adminLogout">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
-        </button>
-      </nav>
-    </aside>
-
-    <!-- Main -->
-    <div class="admin-main">
-      <header class="admin-topbar">
-        <div class="top-left">
-          <h2 id="pageTitle">Dashboard</h2>
-        </div>
-        <div class="top-right" style="text-align:right;">
-          <div id="adminNameDisplay" style="font-weight:600;"></div>
-          <div id="adminEmailDisplay" style="font-size:13px;color:#64748b;"></div>
-        </div>
-      </header>
-
-      <main class="admin-content">
-        <!-- Dashboard -->
-        <section id="view-dashboard" class="view active">
-          <h3>Overview</h3>
-          <div class="cards">
-            <div class="card small">
-              <div class="card-title">Total Elections</div>
-              <div class="card-value" id="stat-elections">—</div>
-            </div>
-            <div class="card small">
-              <div class="card-title">Total Candidates</div>
-              <div class="card-value" id="stat-candidates">—</div>
-            </div>
-            <div class="card small">
-              <div class="card-title">Registered Voters</div>
-              <div class="card-value" id="stat-voters">—</div>
-            </div>
-            <div class="card small">
-              <div class="card-title">Active Elections</div>
-              <div class="card-value" id="stat-active">—</div>
-            </div>
-          </div>
-
-          <h3 style="margin-top:18px">All Elections</h3>
-          <div id="list-elections" class="list"></div>
-        </section>
-
-        <!-- Elections -->
-        <section id="view-elections" class="view">
-          <h3>All Elections</h3>
-          <div id="manage-elections" class="panel"></div>
-        </section>
-
-        <!-- Candidates -->
-        <section id="view-candidates" class="view">
-          <h3>Manage Candidates</h3>
-          <div class="panel">
-            <div class="form-card">
-              <h4>Add New Candidate</h4>
-              <label>Select Election</label>
-              <select id="candidateElection"></select>
-              <label>Select User</label>
-              <select id="candidateUser"></select>
-              <label>Manifesto</label>
-              <textarea id="candidateManifesto" placeholder="Candidate's goals and promises..."></textarea>
-              <button id="addCandidateBtn" class="btn">Add Candidate</button>
-            </div>
-
-            <h4 style="margin-top:20px">Current Candidates</h4>
-            <div id="list-candidates" class="list"></div>
-          </div>
-        </section>
-
-        <!-- Voters -->
-        <section id="view-voters" class="view">
-          <h3>Registered Voters</h3>
-          <div id="list-voters" class="list"></div>
-        </section>
-
-        <!-- ✅ Create Election -->
-        <section id="view-create" class="view">
-          <h3>Create New Election</h3>
-          <div class="form-card wide">
-            <form id="createElectionForm" enctype="multipart/form-data">
-              <label>Title</label>
-              <input id="eTitle" name="title" placeholder="E.g., Student Council 2025" required />
-
-              <label>Description</label>
-              <textarea id="eDesc" name="description" placeholder="Details about the election..." required></textarea>
-
-              <div class="row">
-                <div style="flex:1">
-                  <label>Start Date & Time</label>
-                  <input id="eStart" name="startDate" type="datetime-local" required />
-                </div>
-                <div style="flex:1; margin-left:12px">
-                  <label>End Date & Time</label>
-                  <input id="eEnd" name="endDate" type="datetime-local" required />
-                </div>
-              </div>
-
-              <label>Reference Photo (optional)</label>
-              <input id="ePhoto" name="photo" type="file" accept="image/*" />
-
-              <button id="createElectionBtn" class="btn" type="submit">Create Election</button>
-            </form>
-          </div>
-
-          <h3 style="margin-top:25px;">All Created Elections</h3>
-          <div id="createdElectionsList" class="list"></div>
-        </section>
-      </main>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">eVoting</a></li>
+          <li><a href="#">College Elections</a></li>
+          <li><a href="#">Admin Dashboard</a></li>
+        </ul>
+      </div>
     </div>
-  </div>
 
-  <script src="admin.js"></script>
+    <div class="footer-bottom">
+      &copy; 2025 Vote Vibes. All rights reserved.
+    </div>
+  </footer>
 </body>
 </html>
