@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VoteVibes | E-Voting Portal</title>
 
-  <!-- Font Awesome for Dove Icon -->
+  <!-- Font Awesome for Dove & Profile Icon -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -23,10 +23,10 @@
 
       <ul class="nav-links">
         <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="register.html">Register</a></li>
+        <!-- <li><a href="register.html">Register</a></li> -->
         <li><a href="dashboard.html">Voter Dashboard</a></li>
         <li><a href="candidate.html">Candidate</a></li>
-        <li><a href="ballot.html">Vote</a></li>
+        <!-- <li><a href="ballot.html">Vote</a></li> -->
         <li><a href="result.html">Results</a></li>
         <li><a href="upcoming.html">Upcoming Elections</a></li>
         <li><a href="about.html">About Us</a></li>
@@ -34,6 +34,11 @@
 
       <div class="nav-actions">
         <a href="login.html" class="btn-outline">Login</a>
+        <!-- Profile Icon -->
+      <div class="profile-menu"> <i class="fa-solid fa-circle-user profile-icon">
+        </i> <div class="dropdown hidden"> <a href="profile.html">
+        <i class="fa-solid fa-user"></i> Profile</a> <a href="index.html">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout</a> </div> </div>
       </div>
     </nav>
   </header>
@@ -149,19 +154,23 @@
   </footer>
 
   <!-- JS -->
-  <script src="index.js"></script>
-  <!-- Google Identity Services -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+    const profileIcon = document.querySelector(".profile-icon");
+    const dropdown = document.querySelector(".dropdown");
 
-<!-- Google Sign-In Button -->
-<div id="g_id_onload"
-     data-client_id="970706649931-jh3jhoqe03b5dnv2ctj4jemf7fsbbbr5.apps.googleusercontent.com"
-     data-login_uri="http://127.0.0.1:5500/callback.html"
-     data-auto_prompt="false">
-</div>
+    // Toggle dropdown
+    profileIcon.addEventListener("click", (e) => {
+      dropdown.classList.toggle("hidden");
+      e.stopPropagation();
+    });
 
-<div class="g_id_signin"
-     data-type="standard">
-</div>
+    // Close dropdown if clicking outside
+    document.addEventListener("click", (e) => {
+      if (!dropdown.classList.contains("hidden") && !dropdown.contains(e.target) && e.target !== profileIcon) {
+        dropdown.classList.add("hidden");
+      }
+    });
+    
+  </script>
 </body>
 </html>
